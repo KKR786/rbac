@@ -48,7 +48,7 @@ function Sidebar() {
           </li>
           <li>
             <Link
-              to="/"
+              to="/role-management"
               className="flex items-center p-2 rounded-lg text-white hover:text-gray-900 hover:bg-gray-100 group"
             >
               <svg className="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-gray-900" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -76,7 +76,7 @@ function Sidebar() {
           </li>
           <li>
             <Link
-              to="#"
+              to="/login"
               className="flex items-center p-2 rounded-lg text-white hover:text-gray-900 hover:bg-gray-100 group"
             >
               <svg
@@ -99,7 +99,7 @@ function Sidebar() {
           </li>
           <li>
             <Link
-              to="#"
+              to="/signup"
               className="flex items-center p-2 rounded-lg text-white hover:text-gray-900 hover:bg-gray-100 group"
             >
               <svg

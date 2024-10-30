@@ -1,6 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
+import { useLogin } from "../hooks/useLogin";
+import { Link } from "react-router-dom";
 
 function Login() {
+  const { login, error, isLoading } = useLogin();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    await login(email, password);
+  };
+
   return (
     <section className="bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -9,7 +21,7 @@ function Login() {
             <h1 className="text-xl text-center font-bold leading-tight tracking-tight md:text-2xl text-white">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   for="email"
@@ -23,7 +35,9 @@ function Login() {
                   id="email"
                   className="border rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                   placeholder="name@company.com"
-                  required=""
+                  autoFocus
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
               <div>
@@ -39,7 +53,8 @@ function Login() {
                   id="password"
                   placeholder="••••••••"
                   className="border rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                  required=""
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
               <div className="flex items-center justify-between">
@@ -59,12 +74,12 @@ function Login() {
                     </label>
                   </div>
                 </div>
-                <a
+                <Link
                   href="#"
                   className="text-sm font-medium hover:underline text-primary-500"
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <button
                 type="submit"
@@ -74,12 +89,12 @@ function Login() {
               </button>
               <p className="text-sm font-light text-gray-400">
                 Don’t have an account yet?{" "}
-                <a
+                <Link
                   href="/signup"
                   className="font-medium hover:underline text-primary-500"
                 >
                   Sign up
-                </a>
+                </Link>
               </p>
             </form>
           </div>
