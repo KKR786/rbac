@@ -24,9 +24,22 @@ const newRole = async (req, res) => {
     }
   }
 
+
+  const deleteRole = async (req, res) => {
+    const { id } = req.params
+  
+    const deletedRole = await Role.findOneAndDelete({_id: id})
+  
+    if (!deletedRole) {
+      return res.status(400).json({error: 'No such Role'})
+    }
+  
+    res.status(200).json(deletedRole)
+  }
+
   const getRoleList = async (req, res) => {
     const roleList = await Role.find()
     res.status(200).json(roleList)
   }
 
-  module.exports = { newRole, getRoleList }
+  module.exports = { newRole, getRoleList, deleteRole }
