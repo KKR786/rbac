@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuth";
 import Modal from "../components/Modal";
+import Success from "../components/toast/Success";
+import Error from "../components/toast/Error"; // Assuming you have an Error component
 
 function RoleManagement() {
   const { user } = useAuthContext();
@@ -14,26 +16,28 @@ function RoleManagement() {
 
   const fetchRoleList = async () => {
     const res = await fetch("/api/protected/role/all", {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-        },
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
     });
 
     const json = await res.json();
     if (res.ok) {
-        setGetRoles(json);
+      setGetRoles(json);
+    } else {
+      setError(json.error || 'Failed to fetch roles');
     }
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     if (user) {
-        fetchRoleList();
+      fetchRoleList();
     }
-}, [user]);
+  }, [user]);
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!user) {
@@ -43,7 +47,7 @@ useEffect(() => {
 
     const res = await fetch("/api/protected/role/create", {
       method: "POST",
-      body: JSON.stringify({role, permissions}),
+      body: JSON.stringify({ role, permissions }),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
@@ -53,15 +57,21 @@ useEffect(() => {
     const json = await res.json();
     
     if (!res.ok) {
-      setError(json.error);
-      setSuccess('')
-    }
-    if (res.ok) {
+      setError(json.error || 'An error occurred');
+      setSuccess(null);
+    } else {
       setRole("");
       setPermissions([]);
+      fetchRoleList();
       setSuccess("Role added successfully!");
-      setError('')
+      setError(null);
+      setModalOpen(false);
     }
+
+    setTimeout(() => {
+      setError(null);
+      setSuccess(null);
+    }, 7000);
   };
 
   const handlePermissions = (e) => {
@@ -69,14 +79,12 @@ useEffect(() => {
     
     if (checked) {
       setPermissions((prevPermissions) => [...prevPermissions, value]);
-  } else {
+    } else {
       setPermissions((prevPermissions) => 
           prevPermissions.filter((permission) => permission !== value)
       );
-  }
+    }
   };
-
-  const editOnClick = () => {}
 
   const deleteOnClick = async (id) => {
     if (!user) {
@@ -89,14 +97,16 @@ useEffect(() => {
         Authorization: `Bearer ${user.token}`,
       },
     });
-    const json = await response.json();
 
     if (response.ok) {
-      console.log('deleted', json);
       fetchRoleList();
+    } else {
+      const json = await response.json();
+      setError(json.error || 'Failed to delete role');
     }
   };
   
+
   return (
     <div className="p-4">
       {isModalOpen && (
@@ -119,78 +129,24 @@ useEffect(() => {
               />
             </div>
             <div>
-              <label
-                htmlFor="permissions"
-                className="block mb-2 text-sm font-medium"
-              >
+              <label htmlFor="permissions" className="block mb-2 text-sm font-medium">
                 Permissions
               </label>
-
               <div className="flex justify-between items-center flex-wrap">
-                <div className="flex items-center ps-4 pr-[5px] bg-gray-700 border rounded-lg border-gray-700 mb-2">
-                  <input
-                    id="bordered-checkbox-1"
-                    type="checkbox"
-                    value="read_record"
-                    name="bordered-checkbox"
-                    className="w-4 h-4 text-blue-600 rounded ring-offset-gray-800 bg-gray-700 border-gray-600"
-                    onChange={handlePermissions}
-                  />
-                  <label
-                    htmlFor="bordered-checkbox-1"
-                    className="w-full py-3 ms-2 text-sm font-medium text-white"
-                  >
-                    read_record
-                  </label>
-                </div>
-                <div className="flex items-center ps-4 pr-[5px] bg-gray-700 border rounded-lg border-gray-700 mb-2">
-                  <input
-                    id="bordered-checkbox-2"
-                    type="checkbox"
-                    value="create_record"
-                    name="bordered-checkbox"
-                    className="w-4 h-4 text-blue-600 rounded ring-offset-gray-800 bg-gray-700 border-gray-600"
-                    onChange={handlePermissions}
-                  />
-                  <label
-                    htmlFor="bordered-checkbox-2"
-                    className="w-full py-3 ms-2 text-sm font-medium text-white"
-                  >
-                    create_record
-                  </label>
-                </div>
-                <div className="flex items-center ps-4 pr-[5px] bg-gray-700 border rounded-lg border-gray-700 mb-2">
-                  <input
-                    id="bordered-checkbox-3"
-                    type="checkbox"
-                    value="update_record"
-                    name="bordered-checkbox"
-                    className="w-4 h-4 text-blue-600 rounded ring-offset-gray-800 bg-gray-700 border-gray-600"
-                    onChange={handlePermissions}
-                  />
-                  <label
-                    htmlFor="bordered-checkbox-3"
-                    className="w-full py-3 ms-2 text-sm font-medium text-white"
-                  >
-                    update_record
-                  </label>
-                </div>
-                <div className="flex items-center ps-4 pr-[5px] bg-gray-700 border rounded-lg border-gray-700">
-                  <input
-                    id="bordered-checkbox-4"
-                    type="checkbox"
-                    value="delete_record"
-                    name="bordered-checkbox"
-                    className="w-4 h-4 text-blue-600 rounded ring-offset-gray-800 bg-gray-700 border-gray-600"
-                    onChange={handlePermissions}
-                  />
-                  <label
-                    htmlFor="bordered-checkbox-4"
-                    className="w-full py-3 ms-2 text-sm font-medium text-white"
-                  >
-                    delete_record
-                  </label>
-                </div>
+                {['read_record', 'create_record', 'update_record', 'delete_record'].map((permission) => (
+                  <div key={permission} className="flex items-center ps-4 pr-[5px] bg-gray-700 border rounded-lg border-gray-700 mb-2">
+                    <input
+                      id={`checkbox-${permission}`}
+                      type="checkbox"
+                      value={permission}
+                      className="w-4 h-4 text-blue-600 rounded ring-offset-gray-800 bg-gray-700 border-gray-600"
+                      onChange={handlePermissions}
+                    />
+                    <label htmlFor={`checkbox-${permission}`} className="w-full py-3 ms-2 text-sm font-medium text-white">
+                      {permission}
+                    </label>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -204,62 +160,48 @@ useEffect(() => {
         </Modal>
       )}
 
+      {success && <Success message={success} />}
+      {error && <Error message={String(error)} />}
+
       <div className="flex items-center justify-between mb-3">
         <h1 className="list-heading">Roles List</h1>
         <button
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
           onClick={() => setModalOpen(true)}
         >
           Add New Role
         </button>
       </div>
 
-      {getRoles && <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-400">
-          <thead className="text-xs uppercase bg-gray-700 text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Role
-              </th>
-              <th scope="col" className="px-6 py-3">
-                # Users
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Permissions
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {getRoles.map((data, i) => (
-            <tr key={i} className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium whitespace-nowrap text-white"
-              >
-                {data.role}
-              </th>
-              <td className="px-6 py-4">1</td>
-              <td className="px-6 py-4">
-                {data.permissions.join(', ')}
-              </td>
-              <td class="flex items-center px-6 py-4">
-                <button onClick={() => editOnClick(data._id)} className="font-medium text-blue-500 hover:underline">
-                  Edit
-                </button>
-                <button
-                  onClick={() => deleteOnClick(data._id)}
-                  className="font-medium text-red-500 hover:underline ms-3"
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>))}
-          </tbody>
-        </table>
-      </div>}
+      {getRoles.length > 0 && (
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-400">
+            <thead className="text-xs uppercase bg-gray-700 text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">Role</th>
+                <th scope="col" className="px-6 py-3"># Users</th>
+                <th scope="col" className="px-6 py-3">Permissions</th>
+                <th scope="col" className="px-6 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {getRoles.map((data, i) => (
+                <tr key={i} className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
+                  <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-white">
+                    {data.role}
+                  </th>
+                  <td className="px-6 py-4">1</td>
+                  <td className="px-6 py-4">{data.permissions.join(', ')}</td>
+                  <td className="flex items-center px-6 py-4">
+                    <button onClick={() => editOnClick(data._id)} className="font-medium text-blue-500 hover:underline">Edit</button>
+                    <button onClick={() => deleteOnClick(data._id)} className="font-medium text-red-500 hover:underline ms-3">Remove</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
