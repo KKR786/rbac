@@ -100,10 +100,17 @@ function RoleManagement() {
 
     if (response.ok) {
       fetchRoleList();
+      setSuccess("Role deleted successfully!");
     } else {
       const json = await response.json();
       setError(json.error || 'Failed to delete role');
     }
+
+    setTimeout(() => {
+      setError(null);
+      setSuccess(null);
+    }, 7000);
+ 
   };
   
 

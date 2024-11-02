@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../../hooks/useAuth";
+import { useLogout } from "../../hooks/useLogout";
+
 
 function Topbar() {
+    const { user } = useAuthContext();
+    const { logout } = useLogout();
+    const [openMenu, setOpenMenu] = useState(false)
+
+    const handleClick = () => {
+        logout();
+      };
+
   return (
     <nav className="fixed top-0 z-50 w-full border-b bg-gray-800 border-gray-700">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -44,6 +55,7 @@ function Topbar() {
                   className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                   aria-expanded="false"
                   data-dropdown-toggle="dropdown-user"
+                  onClick={() => setOpenMenu(!openMenu)}
                 >
                   <span className="sr-only">Open user menu</span>
                   <img
@@ -53,8 +65,12 @@ function Topbar() {
                   />
                 </button>
               </div>
+
+              {openMenu && 
               <div
-                className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+                className="z-50 origin-top-right top-[48px] absolute right-0 mt-2 w-56 
+                rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5
+                focus:outline-none"
                 id="dropdown-user"
               >
                 <div className="px-4 py-3" role="none">
@@ -62,54 +78,46 @@ function Topbar() {
                     className="text-sm text-gray-900 dark:text-white"
                     role="none"
                   >
-                    Neil Sims
+                    {user.name}
                   </p>
                   <p
                     className="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
                     role="none"
                   >
-                    neil.sims@flowbite.com
+                    {user.email}
                   </p>
                 </div>
                 <ul className="py-1" role="none">
                   <li>
-                    <a
-                      href="#"
+                    <Link
+                      to="/profile"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                       role="menuitem"
                     >
-                      Dashboard
-                    </a>
+                      Profile
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
+                    <Link
+                      to="#"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                       role="menuitem"
                     >
                       Settings
-                    </a>
+                    </Link>
                   </li>
+                  
                   <li>
-                    <a
-                      href="#"
+                    <button
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                       role="menuitem"
-                    >
-                      Earnings
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                      role="menuitem"
+                      onClick={handleClick}
                     >
                       Sign out
-                    </a>
+                    </button>
                   </li>
                 </ul>
-              </div>
+              </div>}
             </div>
           </div>
         </div>
