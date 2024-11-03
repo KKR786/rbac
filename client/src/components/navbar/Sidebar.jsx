@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthContext } from "../../hooks/useAuth";
 
 function Sidebar() {
-    const { user } = useAuthContext();
+  const { user } = useAuthContext();
   return (
     <aside
       id="logo-sidebar"
@@ -53,10 +53,31 @@ function Sidebar() {
               to="/role-management"
               className="flex items-center p-2 rounded-lg text-white hover:text-gray-900 hover:bg-gray-100 group"
             >
-              <svg className="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-gray-900" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-              <path d="M21,11h-5c-1.654,0-3,1.346-3,3v7c0,1.654,1.346,3,3,3h5c1.654,0,3-1.346,3-3v-7c0-1.654-1.346-3-3-3Zm-1,9h-3c-.553,0-1-.448-1-1s.447-1,1-1h3c.553,0,1,.448,1,1s-.447,1-1,1Zm0-4.003h-3c-.553,0-1-.448-1-1s.447-1,1-1h3c.553,0,1,.448,1,1s-.447,1-1,1ZM3,6C3,2.691,5.691,0,9,0s6,2.691,6,6-2.691,6-6,6S3,9.309,3,6ZM12.026,24H1c-.557,0-1.001-.46-1-1.017,.009-4.955,4.043-8.983,9-8.983h0c.688,0,1.356,.085,2,.232v6.768c0,1.13,.391,2.162,1.026,3Z"/>
-            </svg>
+              <svg
+                className="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-gray-900"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
+                <path d="M21,11h-5c-1.654,0-3,1.346-3,3v7c0,1.654,1.346,3,3,3h5c1.654,0,3-1.346,3-3v-7c0-1.654-1.346-3-3-3Zm-1,9h-3c-.553,0-1-.448-1-1s.447-1,1-1h3c.553,0,1,.448,1,1s-.447,1-1,1Zm0-4.003h-3c-.553,0-1-.448-1-1s.447-1,1-1h3c.553,0,1,.448,1,1s-.447,1-1,1ZM3,6C3,2.691,5.691,0,9,0s6,2.691,6,6-2.691,6-6,6S3,9.309,3,6ZM12.026,24H1c-.557,0-1.001-.46-1-1.017,.009-4.955,4.043-8.983,9-8.983h0c.688,0,1.356,.085,2,.232v6.768c0,1.13,.391,2.162,1.026,3Z" />
+              </svg>
               <span className="ms-3">Role Management</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/task-management"
+              className="flex items-center p-2 rounded-lg text-white hover:text-gray-900 hover:bg-gray-100 group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-gray-900"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path xmlns="http://www.w3.org/2000/svg" d="M0,18c0,2.757,2.243,5,5,5h14c2.757,0,5-2.243,5-5V10H0v8Zm14-5h4c.553,0,1,.448,1,1s-.447,1-1,1h-4c-.553,0-1-.447-1-1s.447-1,1-1Zm0,5h4c.553,0,1,.447,1,1s-.447,1-1,1h-4c-.553,0-1-.447-1-1s.447-1,1-1ZM5.027,12.995c.38-.402,1.013-.418,1.413-.039l1.015,.96,1.838-1.838c.391-.391,1.023-.391,1.414,0s.391,1.023,0,1.414l-1.982,1.982c-.352,.352-.809,.528-1.266,.528-.441,0-.883-.164-1.23-.493l-1.163-1.103c-.401-.379-.418-1.012-.038-1.413Zm0,5c.38-.401,1.013-.418,1.413-.038l1.015,.96,1.838-1.838c.391-.391,1.023-.391,1.414,0s.391,1.023,0,1.414l-1.982,1.982c-.352,.352-.809,.528-1.266,.528-.441,0-.883-.164-1.23-.493l-1.163-1.103c-.401-.379-.418-1.013-.038-1.413ZM19,1H5C2.243,1,0,3.243,0,6v2H24v-2c0-2.757-2.243-5-5-5ZM4.5,6c-.828,0-1.5-.672-1.5-1.5s.672-1.5,1.5-1.5,1.5,.672,1.5,1.5-.672,1.5-1.5,1.5Zm4,0c-.828,0-1.5-.672-1.5-1.5s.672-1.5,1.5-1.5,1.5,.672,1.5,1.5-.672,1.5-1.5,1.5Z"/>
+              </svg>
+              <span className="ms-3">Task Management</span>
             </Link>
           </li>
           <li>
@@ -76,29 +97,31 @@ function Sidebar() {
               <span className="flex-1 ms-3 whitespace-nowrap">Products</span>
             </Link>
           </li>
-        {!user && <li>
-            <Link
-            to="/login"
-            className="flex items-center p-2 rounded-lg text-white hover:text-gray-900 hover:bg-gray-100 group"
-            >
-            <svg
-                className="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-gray-900"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 18 16"
-            >
-                <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"
-                />
-            </svg>
-            <span className="flex-1 ms-3 whitespace-nowrap">Sign In</span>
-            </Link>
-        </li>}
+          {!user && (
+            <li>
+              <Link
+                to="/login"
+                className="flex items-center p-2 rounded-lg text-white hover:text-gray-900 hover:bg-gray-100 group"
+              >
+                <svg
+                  className="w-5 h-5 transition duration-75 text-gray-400 group-hover:text-gray-900"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 18 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3"
+                  />
+                </svg>
+                <span className="flex-1 ms-3 whitespace-nowrap">Sign In</span>
+              </Link>
+            </li>
+          )}
           <li>
             <Link
               to="/signup"

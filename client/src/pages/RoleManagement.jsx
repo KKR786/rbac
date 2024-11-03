@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuth";
 import Modal from "../components/Modal";
 import Success from "../components/toast/Success";
-import Error from "../components/toast/Error"; // Assuming you have an Error component
+import Error from "../components/toast/Error";
 
 function RoleManagement() {
   const { user } = useAuthContext();

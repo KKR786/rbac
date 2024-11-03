@@ -73,7 +73,7 @@ function Topbar() {
                 focus:outline-none"
                 id="dropdown-user"
               >
-                <div className="px-4 py-3" role="none">
+                <div className="px-4 py-3 border-b border-solid border-gray-800" role="none">
                   <p
                     className="text-sm text-gray-900 dark:text-white"
                     role="none"
@@ -87,11 +87,12 @@ function Topbar() {
                     {user.email}
                   </p>
                 </div>
+
                 <ul className="py-1" role="none">
                   <li>
                     <Link
                       to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white"
                       role="menuitem"
                     >
                       Profile
@@ -100,23 +101,23 @@ function Topbar() {
                   <li>
                     <Link
                       to="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-700 hover:text-white"
                       role="menuitem"
                     >
                       Settings
                     </Link>
                   </li>
-                  
-                  <li>
-                    <button
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                      role="menuitem"
-                      onClick={handleClick}
-                    >
-                      Sign out
-                    </button>
-                  </li>
+        
                 </ul>
+                <div className="border-t border-solid border-gray-500">
+                    <button
+                        className="block w-full px-4 py-2 text-sm text-gray-800 font-semibold hover:bg-gray-700 hover:text-white"
+                        role="menuitem"
+                        onClick={handleClick}
+                        >
+                        Sign out
+                    </button>
+                </div>
               </div>}
             </div>
           </div>

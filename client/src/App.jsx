@@ -8,6 +8,7 @@ import Dashoard from "./pages/Dashoard";
 import RoleManagement from "./pages/RoleManagement";
 import UserManagement from "./pages/UserManagement";
 import Nav from "./components/navbar/Nav";
+import TaskManagement from "./pages/TaskManagement";
 
 function App() {
   const { user } = useAuthContext();
@@ -24,6 +25,7 @@ function App() {
               <Route path="/" element={user ? <Dashoard /> : <Navigate to='/login' />} />
               <Route path="/role-management" element={user ? <RoleManagement /> : <Navigate to='/login' />} />
               <Route path="/user-management" element={user ? <UserManagement /> : <Navigate to='/login' />} />
+              <Route path="/task-management" element={user ? <TaskManagement /> : <Navigate to='/login' />} />
             </Routes>
         </div>
       </BrowserRouter>

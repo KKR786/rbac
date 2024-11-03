@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { useLogin } from "../hooks/useLogin";
 import { Link } from "react-router-dom";
+import Error from "../components/toast/Error";
 
 function Login() {
   const { login, error, isLoading } = useLogin();
@@ -100,6 +101,7 @@ function Login() {
           </div>
         </div>
       </div>
+      {error && <Error message={error}/>}
     </section>
   );
 }
