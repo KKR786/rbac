@@ -20,7 +20,7 @@ function App() {
         <div className={`${user ? 'sm:ml-64 mt-14' : ''}`}>
             <Routes>
               <Route path="/login" element={!user ? <Login /> : <Navigate to='/' />} />
-              <Route path="/signup" element={<Register />} />
+              <Route path="/signup" element={!user ? <Register /> : <Navigate to='/' />} />
 
               <Route path="/" element={user ? <Dashoard /> : <Navigate to='/login' />} />
               <Route path="/role-management" element={user ? <RoleManagement /> : <Navigate to='/login' />} />

@@ -76,7 +76,7 @@ function Login() {
                   </div>
                 </div>
                 <Link
-                  href="#"
+                  to="#"
                   className="text-sm font-medium hover:underline text-primary-500"
                 >
                   Forgot password?
@@ -91,7 +91,7 @@ function Login() {
               <p className="text-sm font-light text-gray-400">
                 Don’t have an account yet?{" "}
                 <Link
-                  href="/signup"
+                  to="/signup"
                   className="font-medium hover:underline text-primary-500"
                 >
                   Sign up
