@@ -122,7 +122,7 @@ function Sidebar() {
               </Link>
             </li>
           )}
-          <li>
+          {/* <li>
             <Link
               to="/signup"
               className="flex items-center p-2 rounded-lg text-white hover:text-gray-900 hover:bg-gray-100 group"
@@ -140,7 +140,7 @@ function Sidebar() {
               </svg>
               <span className="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </div>
     </aside>
