@@ -60,7 +60,7 @@ function Topbar() {
                   <span className="sr-only">Open user menu</span>
                   <img
                     className="w-8 h-8 rounded-full"
-                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtRs_rWILOMx5-v3aXwJu7LWUhnPceiKvvDg&s"
                     alt="user photo"
                   />
                 </button>
