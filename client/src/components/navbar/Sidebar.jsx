@@ -82,7 +82,7 @@ function Sidebar() {
           </li>
           <li>
             <Link
-              to="#"
+              to="/products"
               className="flex items-center p-2 rounded-lg text-white hover:text-gray-900 hover:bg-gray-100 group"
             >
               <svg
