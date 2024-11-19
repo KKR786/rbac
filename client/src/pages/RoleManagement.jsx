@@ -194,9 +194,9 @@ function RoleManagement() {
             <tbody>
               {getRoles.map((data, i) => (
                 <tr key={i} className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-white">
+                  <td scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-white">
                     {data.role}
-                  </th>
+                  </td>
                   <td className="px-6 py-4">1</td>
                   <td className="px-6 py-4">{data.permissions.join(', ')}</td>
                   <td className="flex items-center px-6 py-4">

@@ -6,6 +6,7 @@ const publicRoutes = require('./routes/public')
 const protectedRoutes = require('./routes/protected')
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
 
 const uploadDir = path.join(__dirname, 'uploads');
 
@@ -24,8 +25,20 @@ app.use(( req, res, next ) => {
     next();
 })
 
+app.use(cors({
+    origin: (origin, callback) => {
+      if (origin && origin.startsWith('http://localhost')) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  }));
+
 app.use('/api', publicRoutes);
 app.use('/api/protected', protectedRoutes);
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 mongoose.connect(process.env.MONGO_URI)

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../components/Modal";
 import Success from "../components/toast/Success";
 import Error from "../components/toast/Error";
@@ -18,6 +18,28 @@ export default function Products() {
     quantity: "",
     category: "",
   });
+
+  const fetchProductList = async () => {
+    const res = await fetch("/api/products", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const json = await res.json();
+    if (res.ok) {
+      setProducts(json);
+    } else {
+      setError(json.error || 'Failed to fetch products');
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+        fetchProductList();
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,10 +109,7 @@ export default function Products() {
           >
             {/* Product Name */}
             <div>
-              <label
-                htmlFor="name"
-                className="block mb-2 text-sm font-medium"
-              >
+              <label htmlFor="name" className="block mb-2 text-sm font-medium">
                 Product Name
               </label>
               <input
@@ -169,49 +188,50 @@ export default function Products() {
               </div>
             </div>
 
-            {/* Category */}
-            <div>
-              <label
-                htmlFor="category"
-                className="block mb-2 text-sm font-medium"
-              >
-                Category
-              </label>
-              <select
-                id="category"
-                name="category"
-                className="border rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-                value={formData.category}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Select a Category</option>
-                <option value="electronics">Electronics</option>
-                <option value="clothing">Clothing</option>
-                <option value="groceries">Groceries</option>
-                <option value="beauty">Beauty</option>
-                <option value="books">Books</option>
-              </select>
-            </div>
+            <div className="flex space-x-4">
+              <div className="flex-1">
+                <label
+                  htmlFor="category"
+                  className="block mb-2 text-sm font-medium"
+                >
+                  Category
+                </label>
+                <select
+                  id="category"
+                  name="category"
+                  className="border rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Select a Category</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="clothing">Clothing</option>
+                  <option value="groceries">Groceries</option>
+                  <option value="beauty">Beauty</option>
+                  <option value="books">Books</option>
+                </select>
+              </div>
 
-            {/* Image Upload */}
-            <div>
-              <label
-                htmlFor="images"
-                className="block mb-2 text-sm font-medium"
-              >
-                Product Images
-              </label>
-              <input
-                type="file"
-                name="images"
-                id="images"
-                className="block w-full text-sm text-gray-400 file:py-2 file:px-4 file:border file:border-gray-600 file:bg-gray-700 file:text-white file:rounded-lg hover:file:bg-gray-600"
-                accept="image/*"
-                multiple
-                onChange={handleImageChange}
-                required
-              />
+              {/* Image Upload */}
+              <div className="flex-1">
+                <label
+                  htmlFor="images"
+                  className="block mb-2 text-sm font-medium"
+                >
+                  Product Images
+                </label>
+                <input
+                  type="file"
+                  name="images"
+                  id="images"
+                  className="block w-full text-sm text-gray-400 file:py-2 file:px-4 file:border file:border-gray-600 file:bg-gray-700 file:text-white file:rounded-lg hover:file:bg-gray-600"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageChange}
+                  required
+                />
+              </div>
             </div>
 
             <button
@@ -236,6 +256,42 @@ export default function Products() {
           Add New Product
         </button>
       </div>
+
+      {products.length > 0 && (
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-400">
+            <thead className="text-xs uppercase bg-gray-700 text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">Image</th>
+                <th scope="col" className="px-6 py-3">Name</th>
+                <th scope="col" className="px-6 py-3">Category</th>
+                <th scope="col" className="px-6 py-3">Price</th>
+                <th scope="col" className="px-6 py-3">Quantity</th>
+                <th scope="col" className="px-6 py-3">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {products.map((data, i) => (
+                <tr key={i} className="border-b bg-gray-800 border-gray-700 hover:bg-gray-600">
+                    <td className="px-6 py-4">
+                        <img src={`http://localhost:2006/${data.images[0].replace(/\\/g, "/")}`} className="w-8 h-8"/>
+                    </td>
+                  <td scope="row" className="px-6 py-4 font-medium whitespace-nowrap text-white">
+                    {data.name}
+                  </td>
+                  <td className="px-6 py-4">{data.category}</td>
+                  <td className="px-6 py-4">{data.price}</td>
+                  <td className="px-6 py-4">{data.quantity}</td>
+                  <td className="flex items-center px-6 py-4">
+                    <button onClick={() => editOnClick(data._id)} className="font-medium text-blue-500 hover:underline">Edit</button>
+                    <button onClick={() => deleteOnClick(data._id)} className="font-medium text-red-500 hover:underline ms-3">Remove</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
