@@ -26,7 +26,7 @@ function Modal({ isOpen, onClose, children }) {
       <div
         ref={modalRef}
         className="bg-white rounded-lg
-                            shadow-lg p-6 max-w-md
+                            shadow-lg p-6 max-w-lg
                             w-full relative"
       >
         <button

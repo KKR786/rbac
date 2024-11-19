@@ -4,6 +4,14 @@ const express = require('express')
 const mongoose = require('mongoose')
 const publicRoutes = require('./routes/public')
 const protectedRoutes = require('./routes/protected')
+const fs = require('fs');
+const path = require('path');
+
+const uploadDir = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
 
 const app = express();
 
@@ -19,6 +27,7 @@ app.use(( req, res, next ) => {
 app.use('/api', publicRoutes);
 app.use('/api/protected', protectedRoutes);
 
+
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         app.listen(process.env.PORT, () => {
@@ -28,3 +37,8 @@ mongoose.connect(process.env.MONGO_URI)
     .catch(err => {
         console.log(err)
     })
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: err.message });
+});
