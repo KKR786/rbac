@@ -25,9 +25,10 @@ app.use(( req, res, next ) => {
     next();
 })
 
+const allowedOrigins = ['http://localhost:3001', 'http://localhost:5173'];
 app.use(cors({
     origin: (origin, callback) => {
-      if (origin && origin.startsWith('http://localhost')) {
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));

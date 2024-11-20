@@ -77,6 +77,7 @@ export default function Products() {
       setSuccess("Product created successfully!");
       console.log(data);
       setModalOpen(false);
+      fetchProductList();
     }
 
     setTimeout(() => {
