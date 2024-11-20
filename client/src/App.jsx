@@ -12,6 +12,7 @@ import TaskManagement from "./pages/TaskManagement";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import Products from "./pages/Products";
+import SiteConfig from "./pages/SiteConfig";
 
 function App() {
   const { user } = useAuthContext();
@@ -31,6 +32,7 @@ function App() {
               <Route path="/role-management" element={user ? <RoleManagement /> : <Navigate to='/login' />} />
               <Route path="/user-management" element={user ? <UserManagement /> : <Navigate to='/login' />} />
               <Route path="/task-management" element={user ? <TaskManagement /> : <Navigate to='/login' />} />
+              <Route path="/site-config" element={user ? <SiteConfig /> : <Navigate to='/login' />} />
 
               <Route path="*" element={<NotFound />} />
             </Routes>
