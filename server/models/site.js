@@ -12,9 +12,9 @@ const siteSchema = new Schema({
       required: true,
       trim: true
     },
-    logo: {
+    logo: [{
         type: String,
-    },
+    }],
   }, { timestamps: true });
   
   siteSchema.pre('save', async function (next) {

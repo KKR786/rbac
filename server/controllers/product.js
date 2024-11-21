@@ -43,7 +43,7 @@ const deleteProduct = async (req, res) => {
     const deletedProduct = await Product.findOneAndDelete({_id: id})
 
     if (!deletedProduct) {
-        return res.status(400).json({error: 'No such Product'})
+        return res.status(404).json({error: 'No such Product'})
     }
 
     res.status(200).json(deletedProduct)
