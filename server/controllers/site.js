@@ -1,7 +1,7 @@
 const Site = require('../models/site')
 
 const newSite = async (req, res) => {
-    const logo = req.files ? req.files.map(file => file.path) : [];;
+    const logo = req.files ? req.files.map(file => file.path) : [];
 
     const { name } = req.body;
 
@@ -22,6 +22,29 @@ const newSite = async (req, res) => {
     } catch (error) {
       res.status(400).json({error: error.message})
     }
+}
+
+//banner
+const addBanner = async (req, res) => {
+    const { id } = req.params;
+
+    const banners = req.files ? req.files.map(file => file.path) : [];
+
+    try {
+        const site = await Site.findOneAndUpdate(
+            {_id: id},
+            {$set: { banners }},
+            {new: true}
+        );
+
+        if (!site) {
+            return res.status(404).json({ error: 'Site not found' });
+        }
+      res.status(200).json(site)
+    } catch (error) {
+      res.status(400).json({error: error.message})
+    }
+
 }
 
 const getSite = async (req, res) => {
@@ -54,4 +77,4 @@ const getSiteList = async (req, res) => {
     res.status(200).json(siteList)
 }
 
-module.exports = { newSite, getSiteList, getSite, deleteSite }
+module.exports = { newSite, getSiteList, getSite, deleteSite, addBanner }

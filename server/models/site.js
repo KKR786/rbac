@@ -15,6 +15,11 @@ const siteSchema = new Schema({
     logo: [{
         type: String,
     }],
+    banners: [
+      {
+        type: String,
+      }
+    ]
   }, { timestamps: true });
   
   siteSchema.pre('save', async function (next) {
