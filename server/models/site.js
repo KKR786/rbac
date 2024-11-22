@@ -15,11 +15,16 @@ const siteSchema = new Schema({
     logo: [{
         type: String,
     }],
-    banners: [
-      {
-        type: String,
-      }
-    ]
+    banners: {
+      type: [String],
+      validate: {
+        validator: function (v) {
+          return v.length <= 5;
+        },
+        message: 'You can only have a maximum of 5 banners.'
+      },
+      default: []
+    }
   }, { timestamps: true });
   
   siteSchema.pre('save', async function (next) {
