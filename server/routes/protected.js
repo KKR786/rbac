@@ -4,7 +4,7 @@ const upload = require('../middlewares/imageUpload');
 const { newRole, getRoleList, deleteRole } = require('../controllers/roleController')
 const { getUsers } = require('../controllers/auth')
 const { newProduct, deleteProduct } = require('../controllers/product')
-const { newSite, getSiteList, getSite, deleteSite, addBanner } = require('../controllers/site')
+const { newSite, getSiteList, getSite, deleteSite, addBanner, deleteBanner } = require('../controllers/site')
 
 const requireAuth = require('../middlewares/requireAuth')
 const access = require('../middlewares/roleBasedAccess')
@@ -28,6 +28,7 @@ router.delete('/site/:id', access.checkPermission('delete_record'), deleteSite)
 router.get('/site/:id', getSite)
 
 router.post('/site/:id/edit/banner', upload.array('banners', 5), addBanner)
+router.delete('/site/:id/delete/banner', deleteBanner)
 
 
 module.exports = router

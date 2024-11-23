@@ -56,6 +56,37 @@ const addBanner = async (req, res) => {
 
 }
 
+const deleteBanner = async (req, res) => {
+    const { id } = req.params;
+
+    const { bannerIndex } = req.body;
+  
+  if (bannerIndex === undefined) {
+    return res.status(400).json({ error: "Banner index is required" });
+  }
+
+  try {
+    const site = await Site.findById(id);
+
+    if (!site) {
+      return res.status(404).json({ error: "Site not found" });
+    }
+
+    if (bannerIndex < 0 || bannerIndex >= site.banners.length) {
+      return res.status(400).json({ error: "Invalid banner index" });
+    }
+
+    site.banners.splice(bannerIndex, 1);
+
+    await site.save();
+
+    return res.status(200).json({ message: "Banner deleted successfully", banners: site.banners });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Server error while deleting banner" });
+  }
+}
+
 const getSite = async (req, res) => {
     const { id } = req.params;
 
@@ -86,4 +117,4 @@ const getSiteList = async (req, res) => {
     res.status(200).json(siteList)
 }
 
-module.exports = { newSite, getSiteList, getSite, deleteSite, addBanner }
+module.exports = { newSite, getSiteList, getSite, deleteSite, addBanner, deleteBanner }
