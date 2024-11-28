@@ -1,4 +1,6 @@
 const Site = require('../models/site')
+const fs = require('fs');
+const path = require('path');
 
 const newSite = async (req, res) => {
     const logo = req.files ? req.files.map(file => file.path) : [];
@@ -76,7 +78,18 @@ const deleteBanner = async (req, res) => {
       return res.status(400).json({ error: "Invalid banner index" });
     }
 
+    const imagePath = site.banners[bannerIndex];
+
     site.banners.splice(bannerIndex, 1);
+
+    const fullImagePath = path.join(__dirname, '..', 'uploads', path.basename(imagePath));
+
+    fs.unlink(fullImagePath, (err) => {
+      if (err) {
+        console.error("Error deleting file:", err);
+        return res.status(500).json({ error: "Error deleting the file" });
+      }
+    });
 
     await site.save();
 

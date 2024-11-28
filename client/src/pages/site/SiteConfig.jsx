@@ -80,29 +80,30 @@ function SiteConfig() {
   };
 
   const deleteBanner = async(index) => {
+    if(confirm('Are you sure you want to delete?') === true) {
+      try {
+        const res = await fetch(`/api/protected/site/${site._id}/delete/banner`, {
+          method: 'DELETE',
+          body: JSON.stringify({ bannerIndex: index }),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
 
-    try {
-      const res = await fetch(`/api/protected/site/${site._id}/delete/banner`, {
-        method: 'DELETE',
-        body: JSON.stringify({ bannerIndex: index }),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+        const json = await res.json();
+        
+        if (!res.ok) {
+          setError(json.error || "Failed to delete");
+          setSuccess(null);
+        } else {
+          setSuccess("Banner deleted successfully!");
+          fetchSite();
+        }
 
-      const json = await res.json();
-      
-      if (!res.ok) {
-        setError(json.error || "Failed to delete");
-        setSuccess(null);
-      } else {
-        setSuccess("Banner deleted successfully!");
-        fetchSite();
+      } catch (error) {
+        setError(error || "Failed to delete");
       }
-
-    } catch (error) {
-      setError(error || "Failed to delete");
     }
 
     setTimeout(() => {
